@@ -12,7 +12,7 @@ class EyeTracker:
 		# rectangles containing the faces and eyes
 		faceRects = self.faceCascade.detectMultiScale(image,
 			scaleFactor = 1.1, minNeighbors = 5,
-			minSize = (30, 30), flags = cv2.CASCADE_SCALE_IMAGE)
+			minSize = (30, 30), flags = cv2.CASCADE_SCALE_IMAGE) #changed from original code because of updates to openCV 3 
 		rects = []
 
 		# loop over the face bounding boxes
@@ -25,7 +25,7 @@ class EyeTracker:
 			# detect eyes in the face ROI
 			eyeRects = self.eyeCascade.detectMultiScale(faceROI,
 				scaleFactor = 1.1, minNeighbors = 10, minSize = (20, 20),
-				flags = cv2.CASCADE_SCALE_IMAGE)
+				flags = cv2.CASCADE_SCALE_IMAGE) # #changed from original code because of updates to openCV 3 
 
 			# loop over the eye bounding boxes
 			for (eX, eY, eW, eH) in eyeRects:
