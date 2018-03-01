@@ -4,43 +4,30 @@
 # import the necessary packages
 from pyimagesearch.eyetracker import EyeTracker
 from pyimagesearch import imutils
-import argparse
 import cv2
 
-# construct the argument parse and parse the arguments
-ap = argparse.ArgumentParser()
-ap.add_argument("-f", "--face", required = True,
-	help = "path to where the face cascade resides")
-ap.add_argument("-e", "--eye", required = True,
-	help = "path to where the eye cascade resides")
-ap.add_argument("-v", "--video",
-	help = "path to the (optional) video file")
-args = vars(ap.parse_args())
+
+
+face = "C:\Users\darre\Documents\python\self_indicating\cascades\haarcascade_frontalface_default.xml"
+eye = "C:\Users\darre\Documents\python\self_indicating\cascades/haarcascade_eye.xml"
+
+width = 800
 
 # construct the eye tracker
-et = EyeTracker(args["face"], args["eye"])
+et = EyeTracker(face, eye)
 
 # if a video path was not supplied, grab the reference
 # to the gray
-if not args.get("video", False):
-	camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(0)
 
-# otherwise, load the video
-else:
-	camera = cv2.VideoCapture(args["video"])
 
 # keep looping
 while True:
 	# grab the current frame
 	(grabbed, frame) = camera.read()
 
-	# if we are viewing a video and we did not grab a
-	# frame, then we have reached the end of the video
-	if args.get("video") and not grabbed:
-		break
-
 	# resize the frame and convert it to grayscale
-	frame = imutils.resize(frame, width = 300)
+	frame = imutils.resize(frame, width)
 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
 	# detect faces and eyes in the image
@@ -49,6 +36,16 @@ while True:
 	# loop over the face bounding boxes and draw them
 	for rect in rects:
 		cv2.rectangle(frame, (rect[0], rect[1]), (rect[2], rect[3]), (0, 255, 0), 2)
+
+		#print rect[0] # x aixs, left eye
+		#print rect[1] # y axis, right eye
+		cv2.line(frame, (width / 2, 0), (width / 2, 800), (250, 0, 1), 2) #blue line(crossing line) to be used to check if the eyes crossed line
+
+
+		if rect[0] > 400:  # x axis left eye
+			print "left"
+		elif rect[1] < 400: # x axis right eye 
+			print "right"
 
 	# show the tracked eyes and face
 	cv2.imshow("Tracking", frame)

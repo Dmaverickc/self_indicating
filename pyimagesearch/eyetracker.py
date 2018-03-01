@@ -32,7 +32,7 @@ class EyeTracker:
 				# update the list of boounding boxes
 				rects.append(
 					(fX + eX, fY + eY, fX + eX + eW, fY + eY + eH))
-
+	
 		# return the rectangles representing bounding
 		# boxes around the faces and eyes
 		return rects
